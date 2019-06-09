@@ -29,6 +29,11 @@ I had to learn about different types of learning and hence models
 - object detection
 - [clustering](https://developers.google.com/machine-learning/glossary/#clustering)
 
+I had to get an idea for what convolution refers to.
+This [page](http://setosa.io/ev/image-kernels/) has a nice presentation on what convoluation acheives.
+I also had to get an understanding for 'depthwise separable convoluation'.
+
+
 ## Tools
 The [tensorflow js visualization helper](https://js.tensorflow.org/api_vis/latest/) appears to be quite useful.
 
