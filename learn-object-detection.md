@@ -23,6 +23,9 @@ In particular the following concepts I needed to get familiar with
 I had to learn about the different connectivities between layers
 - [Dense](https://developers.google.com/machine-learning/glossary/#dense_layer), [Convolutional](https://developers.google.com/machine-learning/glossary/#convolutional_layer) and [Pooling](https://developers.google.com/machine-learning/glossary/#pooling) - Dense layers connect all outputs from a layer to the next but this can be expensive. A convolution layer only connects inputs in a small 'areas' to the next layer. Convolution filters  can enhance images features.  Pooling was a new concept and is somewhat close to convolution.  The input to a subsequent layer can be a function of values in a small area.  The function might be the 'max' function.  The significance of poolin is that it can facilitate scale and rotation invariance. 
 
+
+I had to learn what a 'sequential' model is. Its a model with layers where each layer connects only to the next layer. The alternative is a network with some layers that connect to layers beyond just the next layer.
+
 I had to learn about different types of learning and hence models
 - [regression model](https://developers.google.com/machine-learning/glossary/#regression_model)
 - [classification](https://developers.google.com/machine-learning/glossary/#classification_model) 
@@ -30,8 +33,20 @@ I had to learn about different types of learning and hence models
 - [clustering](https://developers.google.com/machine-learning/glossary/#clustering)
 
 I had to get an idea for what convolution refers to.
-This [page](http://setosa.io/ev/image-kernels/) has a nice presentation on what convoluation acheives.
+This [page](http://setosa.io/ev/image-kernels/) has a nice presentation on what convolution acheives.
 I also had to get an understanding for 'depthwise separable convoluation'.
+
+
+I had to learn how kernel and bias are used.
+Kernels are the weights which are multiplied by the inputs. (Dot product)
+The bias is added to the dot product result.
+This value is then applied to the activation function.
+
+## Know How
+
+The tensorflow models are saved to 2 separate files.
+- model.json - Has the architecture of the model 
+- weights.bin - Binary file representing the kernel and bias
 
 
 ## Tools
@@ -47,3 +62,40 @@ In the tensorflow js example there is a [simple-object-detection example](https:
 ### Questions 
 
 Why is fine grained learning required
+
+#### How to modify the base network to extend it?
+First the pretrained model is loaded
+```
+const mobilenet = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json')
+```
+Next a new model is created which links the pretrained model inputs and outputs.  The layer training is disabled.
+```
+const layer = mobilenet.getLayer('conv_pw_11_relu');
+const base = tf.model({inputs: mobilenet.inputs, outputs: layer.output});
+
+for (const layer of base.layers) {
+    layer.trainable = false;
+}
+```
+
+Then an extension model is created 
+```
+let inputShape = truncatedBase.outputs[0].shape.slice(1) //14,14,128
+
+const extension = tf.sequential();
+extension.add(tf.layers.flatten({inputShape}));
+extension.add(tf.layers.dense({units: 100, activation: 'relu'}));
+extension.add(tf.layers.dense({units: 5}));
+```
+
+The base and extension are linked
+```
+const newOutput = extension.apply(truncatedBase.outputs[0]);
+```
+
+A new model is created which joins the inputs to the truncated base to the new outputs
+```
+const model = tf.model({inputs: truncatedBase.inputs, outputs: newOutput});
+```
+
+
