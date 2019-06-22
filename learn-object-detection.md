@@ -2,8 +2,8 @@
 
 ## What am I trying to do
 
-I am trying to create an object detector that I can run on a phone and will communicate with other object detectors running on other phones.
-I want the detector to be able to recognize a ball and lines.
+I am trying to create an object detector that I can run on a phone.
+I want the detector to be able to recognize 2 types of things in an image.
 
 ## Getting Started
 
@@ -18,7 +18,7 @@ Particularly useful are
 There are a number of terms which I have needed to learn.  The [tensorflow glossary](https://developers.google.com/machine-learning/glossary/) has been very useful.
 
 In particular the following concepts I needed to get familiar with
-- [Transfer learning](https://developers.google.com/machine-learning/glossary/#transfer_learning) - So this is how we can use a large deep learning model and extend it. This is what I am hoping to do.   I get the general concept but I dont yet understand the way the sample get the output from the base model to feed it into the extension mdoel
+- [Transfer learning](https://developers.google.com/machine-learning/glossary/#transfer_learning) - So this is how we can use a large deep learning model and extend it. This is what I am hoping to do.  There is a description below how this is realized.
 
 I had to learn about the different connectivities between layers
 - [Dense](https://developers.google.com/machine-learning/glossary/#dense_layer), [Convolutional](https://developers.google.com/machine-learning/glossary/#convolutional_layer) and [Pooling](https://developers.google.com/machine-learning/glossary/#pooling) - Dense layers connect all outputs from a layer to the next but this can be expensive. A convolution layer only connects inputs in a small 'areas' to the next layer. Convolution filters  can enhance images features.  Pooling was a new concept and is somewhat close to convolution.  The input to a subsequent layer can be a function of values in a small area.  The function might be the 'max' function.  The significance of poolin is that it can facilitate scale and rotation invariance. 
@@ -61,7 +61,7 @@ In the tensorflow js example there is a [simple-object-detection example](https:
 
 ### Questions 
 
-Why is fine grained learning required
+
 
 #### How to modify the base network to extend it?
 First the pretrained model is loaded
@@ -98,4 +98,11 @@ A new model is created which joins the inputs to the truncated base to the new o
 const model = tf.model({inputs: truncatedBase.inputs, outputs: newOutput});
 ```
 
+#### Why is fine grained learning required
 
+The training occurs in 2 phases.
+
+First we train the extension layers with all base layers frozen.
+Then we unfreeze the last 3 layers and train again.
+
+I imagine the idea is to use the base model features as they are to adjust the extension layer and it mostly right before allowing the rightmost mobilenet layers to update.
