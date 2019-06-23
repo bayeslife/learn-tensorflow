@@ -3,7 +3,23 @@
 ## What am I trying to do
 
 I am trying to create an object detector that I can run on a phone.
-I want the detector to be able to recognize 2 types of things in an image.
+I want the detector to be able to recognize 2 types of things in an image and I want to know the location of the thing in the image.
+
+## What got me interested in this
+
+- [Object Detection in the browser](https://hackernoon.com/tensorflow-js-real-time-object-detection-in-10-lines-of-code-baf15dfb95b2)
+- [Train controls to play Pacman ](https://storage.googleapis.com/tfjs-examples/webcam-transfer-learning/dist/index.html)
+- [Simple Object Detection](https://github.com/tensorflow/tfjs-examples/tree/master/simple-object-detection)
+
+## Main concept
+Define networks that will be trained with data to perform 
+- regression
+- classification
+- object detection
+- clustering
+
+##### Network
+~![](./images/MobileNetSSD.PNG)
 
 ## Getting Started
 
@@ -11,7 +27,12 @@ I have been reading everything I can find out tensorflow and trying to become fa
 
 Particularly useful are
 - [the api docs](https://js.tensorflow.org/api/latest)
+    - [Tensors](https://www.tensorflow.org/js/guide/tensors_operations), [Models and Layers](https://www.tensorflow.org/js/guide/models_and_layers)
 - [how to train models](https://www.tensorflow.org/js/guide/train_model)
+
+
+
+
 
 ## Terminology
 
@@ -50,7 +71,7 @@ The tensorflow models are saved to 2 separate files.
 
 
 ## Tools
-The [tensorflow js visualization helper](https://js.tensorflow.org/api_vis/latest/) appears to be quite useful.
+The [tensorflow js visualization helper](https://js.tensorflow.org/api_vis/latest/) appears to be quite useful. [This](https://storage.googleapis.com/tfjs-vis/mnist/dist/index.html) demonstrates how it can be used.
 
 api, 
 transfer learning and object detection.
