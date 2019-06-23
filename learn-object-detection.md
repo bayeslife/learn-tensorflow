@@ -51,11 +51,11 @@ I had to learn about different types of learning and hence models
 
 
 I had to learn about the convolution 
-    - [Convolution as an operation is described here.](https://i.stack.imgur.com/J9E4z.png)  Convolution obviously is less 'expensive' that fully connected (dense) connectivity.
+ - [Convolution as an operation is described here.](https://i.stack.imgur.com/J9E4z.png)  Convolution obviously is less 'expensive' that fully connected (dense) connectivity.
         -  This [page](http://setosa.io/ev/image-kernels/) has a nice presentation on what convolution acheives.
     -  The pretrained models utilized layers described as [depthwise separable convolution](https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728).  The idea here is to reduce the number of computations required to perform a convolution operation.  
 
-- With a connected network the output layers are a function of kernel, bias and activation function.
+- With a connected network the output nodes are a function of kernel, bias and activation function.
     - Kernels are the weights which are multiplied by the inputs. (Dot product)
     - The bias is added to the dot product result.
     - This value is then applied to the activation function.
@@ -74,27 +74,30 @@ Particularly useful are
     - [Tensors](https://www.tensorflow.org/js/guide/tensors_operations), [Models and Layers](https://www.tensorflow.org/js/guide/models_and_layers)
 - [how to train models](https://www.tensorflow.org/js/guide/train_model)
 
-
-
 ## Know How
 
 The tensorflow models are saved to 2 separate files.
 - model.json - Has the architecture of the model 
 - weights.bin - Binary file representing the kernel and bias
-
+Models can be loaded into tensorflow using the tensorflow api and referring to the model.json file.
+```
+model = await tf.loadLayersModel(modelPath);
+```
 
 ## Tools
 The [tensorflow js visualization helper](https://js.tensorflow.org/api_vis/latest/) appears to be quite useful. [This](https://storage.googleapis.com/tfjs-vis/mnist/dist/index.html) demonstrates how it can be used.
 
-api, 
-transfer learning and object detection.
+### Transfer Learning
+
+```Transferring information from one machine learning task to another. For example, in multi-task learning, a single model solves multiple tasks, such as a deep model that has different output nodes for different tasks. Transfer learning might involve transferring knowledge from the solution of a simpler task to a more complex one, or involve transferring knowledge from a task where there is more data to one where there is less data.```
 
 
-In the tensorflow js example there is a [simple-object-detection example](https://github.com/tensorflow/tfjs-examples/tree/master/simple-object-detection).
-
-
-### Questions 
-
+The idea with the simple-object-detection example is to
+- load a model pretrained on another task
+- freeze the layers
+- create a small network which will be grafted into the pretrained model
+- train just the new network
+- then train unfreeze a couple of the later layers and train the new network and the unfrozen layers 
 
 
 #### How to modify the base network to extend it?
@@ -104,11 +107,10 @@ const mobilenet = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-
 ```
 ~![](./images/MobileNetSSD.PNG)
 
-Next a new model is created which links the pretrained model inputs and outputs.  The layer training is disabled.
+Training in the layers of this model is disabled.
 ```
 const layer = mobilenet.getLayer('conv_pw_11_relu');
 const base = tf.model({inputs: mobilenet.inputs, outputs: layer.output});
-
 for (const layer of base.layers) {
     layer.trainable = false;
 }
@@ -116,7 +118,7 @@ for (const layer of base.layers) {
 
 Then an extension model is created 
 ```
-let inputShape = truncatedBase.outputs[0].shape.slice(1) //14,14,128
+let inputShape = base.outputs[0].shape.slice(1) //14,14,128
 
 const extension = tf.sequential();
 extension.add(tf.layers.flatten({inputShape}));
@@ -131,7 +133,7 @@ const newOutput = extension.apply(truncatedBase.outputs[0]);
 
 A new model is created which joins the inputs to the truncated base to the new outputs
 ```
-const model = tf.model({inputs: truncatedBase.inputs, outputs: newOutput});
+const model = tf.model({inputs: base.inputs, outputs: newOutput});
 ```
 
 #### Why is fine grained learning required
