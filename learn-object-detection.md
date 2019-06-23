@@ -144,3 +144,14 @@ First we train the extension layers with all base layers frozen.
 Then we unfreeze the last 3 layers and train again.
 
 I imagine the idea is to use the base model features as they are to adjust the extension layer and it mostly right before allowing the rightmost mobilenet layers to update.
+
+
+## Things To Try
+
+- For some reason the model isnt very good at locating the line size.  Maybe just try training on lines.
+- Skip tine fine tune training
+- Try 1 dense layer rather than 2
+
+### Next steps
+- Get more familiar with tools which let me understand the model...Tensor Board
+
