@@ -11,6 +11,10 @@ I want the detector to be able to recognize 2 types of things in an image and I 
 - [Train controls to play Pacman ](https://storage.googleapis.com/tfjs-examples/webcam-transfer-learning/dist/index.html)
 - [Simple Object Detection](https://github.com/tensorflow/tfjs-examples/tree/master/simple-object-detection)
 
+## Performance of a model I trained
+
+[Here](http://localhost:1234/) is a model I trained and you can evaluate its performance yourself.
+
 ## Main concept
 Define networks that will be trained with data to perform 
 - regression
@@ -19,7 +23,47 @@ Define networks that will be trained with data to perform
 - clustering
 
 ##### Network
-~![](./images/Network.PNG)
+![](./images/Network.PNG)
+![](https://cdn-images-1.medium.com/max/800/1*WaURHHI263FwP5vvRVpvzA.png)
+
+## Terminology
+
+There are a number of terms which I have needed to learn.  The [tensorflow glossary](https://developers.google.com/machine-learning/glossary/) has been very useful.
+
+In particular the following concepts I needed to get familiar with
+
+I had to learn about the different connectivities between layers
+- [Dense](https://developers.google.com/machine-learning/glossary/#dense_layer), [Convolutional](https://developers.google.com/machine-learning/glossary/#convolutional_layer) and [Pooling](https://developers.google.com/machine-learning/glossary/#pooling) 
+    - Dense layers connect all outputs from a layer to the next but this can be expensive.
+        - Presumption: Dense layers can detect association (things that go together or dont)
+    - Convolution layer only connects inputs in a small 'areas' to the next layer.
+        - Convolution filters can [detect/isolate/reify](http://aishack.in/tutorials/image-convolution-examples/) image features. 
+    - Pooling was a new concept and is somewhat close to convolution.  The input to a subsequent layer can be a function of values in a small area.  The function might be the 'max' function.  
+        - The significance of pooling is that it can facilitate scale and rotation invariance. 
+
+- Sequential models - I had to learn what a 'sequential' model is. Its a model with layers where each layer connects only to the next layer. The alternative is a network with some layers that connect to layers beyond just the next layer.  
+
+I had to learn about different types of learning and hence models
+- [regression model](https://developers.google.com/machine-learning/glossary/#regression_model)
+- [classification](https://developers.google.com/machine-learning/glossary/#classification_model) 
+- object detection
+- [clustering](https://developers.google.com/machine-learning/glossary/#clustering)
+
+
+I had to learn about the convolution 
+    - [Convolution as an operation is described here.](https://i.stack.imgur.com/J9E4z.png)  Convolution obviously is less 'expensive' that fully connected (dense) connectivity.
+        -  This [page](http://setosa.io/ev/image-kernels/) has a nice presentation on what convolution acheives.
+    -  The pretrained models utilized layers described as [depthwise separable convolution](https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728).  The idea here is to reduce the number of computations required to perform a convolution operation.  
+
+- With a connected network the output layers are a function of kernel, bias and activation function.
+    - Kernels are the weights which are multiplied by the inputs. (Dot product)
+    - The bias is added to the dot product result.
+    - This value is then applied to the activation function.
+        - There are [many activation functions](https://adventuresinmachinelearning.com/vanishing-gradient-problem-tensorflow/)
+    - The output is then a single value in the layer.
+
+- [Transfer learning](https://developers.google.com/machine-learning/glossary/#transfer_learning) - So this is how we can use a large deep learning model and extend it. This is what I am hoping to do.  There is a description below how this is realized.
+
 
 ## Getting Started
 
@@ -31,41 +75,6 @@ Particularly useful are
 - [how to train models](https://www.tensorflow.org/js/guide/train_model)
 
 
-## Terminology
-
-There are a number of terms which I have needed to learn.  The [tensorflow glossary](https://developers.google.com/machine-learning/glossary/) has been very useful.
-
-In particular the following concepts I needed to get familiar with
-- [Transfer learning](https://developers.google.com/machine-learning/glossary/#transfer_learning) - So this is how we can use a large deep learning model and extend it. This is what I am hoping to do.  There is a description below how this is realized.
-
-I had to learn about the different connectivities between layers
-- [Dense](https://developers.google.com/machine-learning/glossary/#dense_layer), [Convolutional](https://developers.google.com/machine-learning/glossary/#convolutional_layer) and [Pooling](https://developers.google.com/machine-learning/glossary/#pooling) 
-    - Dense layers connect all outputs from a layer to the next but this can be expensive.
-        - Presumption: Dense layers can detect association (things that go together or dont)
-    - Convolution layer only connects inputs in a small 'areas' to the next layer.
-        - Convolution filters can [detect/isolate/reify](http://aishack.in/tutorials/image-convolution-examples/) image features. 
-    - Pooling was a new concept and is somewhat close to convolution.  The input to a subsequent layer can be a function of values in a small area.  The function might be the 'max' function.  
-        - The significance of pooling is that it can facilitate scale and rotation invariance. 
-
-
-- Sequential models - I had to learn what a 'sequential' model is. Its a model with layers where each layer connects only to the next layer. The alternative is a network with some layers that connect to layers beyond just the next layer.  
-
-I had to learn about different types of learning and hence models
-- [regression model](https://developers.google.com/machine-learning/glossary/#regression_model)
-- [classification](https://developers.google.com/machine-learning/glossary/#classification_model) 
-- object detection
-- [clustering](https://developers.google.com/machine-learning/glossary/#clustering)
-
-- Convolution 
-    - I had to get an idea for what convolution refers to. [Convolution as an operation is described here.](https://i.stack.imgur.com/J9E4z.png)  Convolution obviously is less 'expensive' that fully connected (dense) connectivity.
-    -  This [page](http://setosa.io/ev/image-kernels/) has a nice presentation on what convolution acheives.
-    -  The pretrained models utilized layers described as [depthwise separable convolution](https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728).  The idea here is to reduce the number of computations required to perform a convolution operation.  
-
-- With a densely connected network the output layers are a function of kernel, bias and activation function.
-    - Kernels are the weights which are multiplied by the inputs. (Dot product)
-    - The bias is added to the dot product result.
-    - This value is then applied to the activation function.
-        - There are [many activation functions](https://adventuresinmachinelearning.com/vanishing-gradient-problem-tensorflow/)
 
 ## Know How
 
