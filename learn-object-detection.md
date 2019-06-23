@@ -19,7 +19,7 @@ Define networks that will be trained with data to perform
 - clustering
 
 ##### Network
-~![](./images/MobileNetSSD.PNG)
+~![](./images/Network.PNG)
 
 ## Getting Started
 
@@ -31,9 +31,6 @@ Particularly useful are
 - [how to train models](https://www.tensorflow.org/js/guide/train_model)
 
 
-
-
-
 ## Terminology
 
 There are a number of terms which I have needed to learn.  The [tensorflow glossary](https://developers.google.com/machine-learning/glossary/) has been very useful.
@@ -42,10 +39,16 @@ In particular the following concepts I needed to get familiar with
 - [Transfer learning](https://developers.google.com/machine-learning/glossary/#transfer_learning) - So this is how we can use a large deep learning model and extend it. This is what I am hoping to do.  There is a description below how this is realized.
 
 I had to learn about the different connectivities between layers
-- [Dense](https://developers.google.com/machine-learning/glossary/#dense_layer), [Convolutional](https://developers.google.com/machine-learning/glossary/#convolutional_layer) and [Pooling](https://developers.google.com/machine-learning/glossary/#pooling) - Dense layers connect all outputs from a layer to the next but this can be expensive. A convolution layer only connects inputs in a small 'areas' to the next layer. Convolution filters  can enhance images features.  Pooling was a new concept and is somewhat close to convolution.  The input to a subsequent layer can be a function of values in a small area.  The function might be the 'max' function.  The significance of poolin is that it can facilitate scale and rotation invariance. 
+- [Dense](https://developers.google.com/machine-learning/glossary/#dense_layer), [Convolutional](https://developers.google.com/machine-learning/glossary/#convolutional_layer) and [Pooling](https://developers.google.com/machine-learning/glossary/#pooling) 
+    - Dense layers connect all outputs from a layer to the next but this can be expensive.
+        - Presumption: Dense layers can detect association (things that go together or dont)
+    - Convolution layer only connects inputs in a small 'areas' to the next layer.
+        - Convolution filters can [detect/isolate/reify](http://aishack.in/tutorials/image-convolution-examples/) image features. 
+    - Pooling was a new concept and is somewhat close to convolution.  The input to a subsequent layer can be a function of values in a small area.  The function might be the 'max' function.  
+        - The significance of pooling is that it can facilitate scale and rotation invariance. 
 
 
-I had to learn what a 'sequential' model is. Its a model with layers where each layer connects only to the next layer. The alternative is a network with some layers that connect to layers beyond just the next layer.
+- Sequential models - I had to learn what a 'sequential' model is. Its a model with layers where each layer connects only to the next layer. The alternative is a network with some layers that connect to layers beyond just the next layer.  
 
 I had to learn about different types of learning and hence models
 - [regression model](https://developers.google.com/machine-learning/glossary/#regression_model)
@@ -53,15 +56,16 @@ I had to learn about different types of learning and hence models
 - object detection
 - [clustering](https://developers.google.com/machine-learning/glossary/#clustering)
 
-I had to get an idea for what convolution refers to.
-This [page](http://setosa.io/ev/image-kernels/) has a nice presentation on what convolution acheives.
-I also had to get an understanding for 'depthwise separable convoluation'.
+- Convolution 
+    - I had to get an idea for what convolution refers to. [Convolution as an operation is described here.](https://i.stack.imgur.com/J9E4z.png)  Convolution obviously is less 'expensive' that fully connected (dense) connectivity.
+    -  This [page](http://setosa.io/ev/image-kernels/) has a nice presentation on what convolution acheives.
+    -  The pretrained models utilized layers described as [depthwise separable convolution](https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728).  The idea here is to reduce the number of computations required to perform a convolution operation.  
 
-
-I had to learn how kernel and bias are used.
-Kernels are the weights which are multiplied by the inputs. (Dot product)
-The bias is added to the dot product result.
-This value is then applied to the activation function.
+- With a densely connected network the output layers are a function of kernel, bias and activation function.
+    - Kernels are the weights which are multiplied by the inputs. (Dot product)
+    - The bias is added to the dot product result.
+    - This value is then applied to the activation function.
+        - There are [many activation functions](https://adventuresinmachinelearning.com/vanishing-gradient-problem-tensorflow/)
 
 ## Know How
 
@@ -89,6 +93,8 @@ First the pretrained model is loaded
 ```
 const mobilenet = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json')
 ```
+~![](./images/MobileNetSSD.PNG)
+
 Next a new model is created which links the pretrained model inputs and outputs.  The layer training is disabled.
 ```
 const layer = mobilenet.getLayer('conv_pw_11_relu');
