@@ -151,6 +151,8 @@ I imagine the idea is to use the base model features as they are to adjust the e
 - For some reason the model isnt very good at locating the line size.  Maybe just try training on lines.
 - Skip tine fine tune training
 - Try 1 dense layer rather than 2
+- try different learning rates
+- try convolution + dense rather than just dense.
 
 ### Next steps
 - Get more familiar with tools which let me understand the model...Tensor Board
