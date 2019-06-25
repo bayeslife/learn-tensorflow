@@ -25,6 +25,8 @@ Define networks that will be trained with data to perform
 - clustering
 
 ##### Network
+
+What do we mean by 'network'?  Things like this.
 ![](./images/Network.PNG)
 ![](https://cdn-images-1.medium.com/max/800/1*WaURHHI263FwP5vvRVpvzA.png)
 
