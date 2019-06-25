@@ -15,7 +15,11 @@ I want the detector to be able to recognize 2 types of things in an image and I 
 
 ## Performance of a model I trained
 
-[Here](http://localhost:1234/) is a model I trained and you can evaluate its performance yourself.
+I modified the [Simple Object Detection](https://github.com/tensorflow/tfjs-examples/tree/master/simple-object-detection) intending to try object detection on a slightly different problem and see how well I could make it.
+I changed the generated images intended to understand in some detail the components of the source.
+
+The results are encouraging but not perfect as yet.
+![](./images/objectdetection.gif)
 
 ## Main concept
 Define networks that will be trained with data to perform 
@@ -29,6 +33,8 @@ Define networks that will be trained with data to perform
 What do we mean by 'network'?  Things like this.
 ![](./images/Network.PNG)
 ![](https://cdn-images-1.medium.com/max/800/1*WaURHHI263FwP5vvRVpvzA.png)
+
+[Here is a network playground which is useful to start to understand the network domain](https://playground.tensorflow.org/)
 
 ## Terminology
 
