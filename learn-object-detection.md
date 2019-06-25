@@ -10,6 +10,8 @@ I want the detector to be able to recognize 2 types of things in an image and I 
 - [Object Detection in the browser](https://hackernoon.com/tensorflow-js-real-time-object-detection-in-10-lines-of-code-baf15dfb95b2)
 - [Train controls to play Pacman ](https://storage.googleapis.com/tfjs-examples/webcam-transfer-learning/dist/index.html)
 - [Simple Object Detection](https://github.com/tensorflow/tfjs-examples/tree/master/simple-object-detection)
+- [TensorFlow JS Demos](https://www.tensorflow.org/js/demos)
+
 
 ## Performance of a model I trained
 
